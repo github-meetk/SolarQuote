@@ -1,0 +1,72 @@
+generator client {
+    provider = "prisma-client-js"
+}
+datasource db {
+    provider = "postgresql"
+    url = env("DATABASE_URL")
+}
+
+    enum LeadStatus {
+        NEW
+        CONTACTED
+        DESIGNED
+        PROPOSAL_SENT
+        WON
+        LOST
+    }
+    model Lead {
+    id String @id @default(cuid())
+    name String
+    email String
+    phone String
+    address String
+    status LeadStatus @default(NEW)
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    project Project?
+    @@index([status])
+    @@index([createdAt])
+}
+
+model Project {
+    id                     String       @id @default(cuid())
+    leadId                 String       @unique
+    roofAreaM2             Float
+    annualConsumptionKwh   Float
+    roofTiltDeg            Float
+    roofAzimuthDeg         Float
+    batteryIncluded        Boolean
+    electricityPriceEurKwh Float
+    createdAt              DateTime     @default(now())
+    lead                   Lead         @relation(fields: [leadId], references: [id], onDelete: Cascade)
+    simulations            Simulation[]
+    proposal               Proposal?
+
+    @@index([leadId])
+}
+
+model Simulation {
+    id                 String   @id @default(cuid())
+    projectId          String
+    systemSizeKwp      Float
+    annualYieldKwh     Float
+    selfConsumptionPct Float
+    annualSavingsEur   Float
+    systemCostEur      Float
+    paybackYears       Float
+    monthlyYieldKwh    Json
+    createdAt          DateTime @default(now())
+    project            Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+    @@index([projectId, createdAt])
+}
+
+model Proposal {
+    id            String   @id @default(cuid())
+    projectId     String   @unique
+    publicId      String   @unique
+    summary       String
+    totalPriceEur Float
+    createdAt     DateTime @default(now())
+    project       Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+}

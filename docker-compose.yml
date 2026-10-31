@@ -1,0 +1,18 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: solarquote
+      POSTGRES_PASSWORD: solarquote
+      POSTGRES_DB: solarquote
+    ports:
+      - '5432:5432'
+    volumes:
+      - solarquote_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U solarquote -d solarquote']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+volumes:
+  solarquote_pgdata:

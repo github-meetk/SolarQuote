@@ -1,0 +1,1 @@
+{"buildCommand":"pnpm --filter @solarquote/web build","outputDirectory":"apps/web/dist","installCommand":"pnpm install --frozen-lockfile"}

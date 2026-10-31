@@ -1,0 +1,2 @@
+import { describe, expect, it } from 'vitest'; import { leadInputSchema } from './index';
+describe('shared schemas', () => { it('rejects malformed leads', () => { expect(leadInputSchema.safeParse({ name: 'A' }).success).toBe(false); }); it('accepts a lead', () => { expect(leadInputSchema.safeParse({ name: 'Anna Müller', email: 'anna@example.de', phone: '+49 170 123456', address: 'Hauptstraße 4, Freiburg' }).success).toBe(true); }); });

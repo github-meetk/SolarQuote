@@ -1,0 +1,31 @@
+{
+  "name": "solarquote",
+  "private": true,
+  "packageManager": "pnpm@8.15.9",
+  "scripts": {
+    "dev": "concurrently \"pnpm --filter @solarquote/api dev\" \"pnpm --filter @solarquote/web dev\"",
+    "build": "pnpm -r build",
+    "lint": "eslint . --ext .ts,.tsx",
+    "typecheck": "pnpm -r typecheck",
+    "test": "pnpm -r test",
+    "prisma": "prisma",
+    "prisma:generate": "prisma generate",
+    "prisma:seed": "prisma db seed",
+    "format": "prettier --write ."
+  },
+  "devDependencies": {
+    "@prisma/client": "^5.11.0",
+    "@types/node": "^20.11.24",
+    "@typescript-eslint/eslint-plugin": "^7.1.1",
+    "@typescript-eslint/parser": "^7.1.1",
+    "concurrently": "^8.2.2",
+    "eslint": "^8.57.0",
+    "prettier": "^3.2.5",
+    "prisma": "^5.11.0",
+    "tsx": "^4.7.1",
+    "typescript": "^5.4.2"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  }
+}
