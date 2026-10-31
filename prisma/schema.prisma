@@ -1,29 +1,32 @@
 generator client {
     provider = "prisma-client-js"
 }
+
 datasource db {
     provider = "postgresql"
-    url = env("DATABASE_URL")
+    url      = env("DATABASE_URL")
 }
 
-    enum LeadStatus {
-        NEW
-        CONTACTED
-        DESIGNED
-        PROPOSAL_SENT
-        WON
-        LOST
-    }
-    model Lead {
-    id String @id @default(cuid())
-    name String
-    email String
-    phone String
-    address String
-    status LeadStatus @default(NEW)
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    project Project?
+enum LeadStatus {
+    NEW
+    CONTACTED
+    DESIGNED
+    PROPOSAL_SENT
+    WON
+    LOST
+}
+
+model Lead {
+    id        String     @id @default(cuid())
+    name      String
+    email     String
+    phone     String
+    address   String
+    status    LeadStatus @default(NEW)
+    createdAt DateTime   @default(now())
+    updatedAt DateTime   @updatedAt
+    project   Project?
+
     @@index([status])
     @@index([createdAt])
 }

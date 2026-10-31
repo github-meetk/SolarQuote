@@ -30,7 +30,8 @@ app.get('/api/leads', async () =>
 );
 app.post('/api/leads', async (request, reply) => {
   const parsed = leadInputSchema.safeParse(request.body);
-    if (!parsed.success) return reply.badRequest(JSON.stringify(parsed.error.flatten()));
+  if (!parsed.success)
+    return reply.badRequest(JSON.stringify(parsed.error.flatten()));
   return reply.code(201).send(await prisma.lead.create({ data: parsed.data }));
 });
 app.get('/api/leads/:id', async (request, reply) => {
@@ -51,7 +52,8 @@ app.patch('/api/leads/:id/status', async (request, reply) => {
   const parsed = leadStatusSchema.safeParse(
     (request.body as { status?: unknown }).status,
   );
-    if (!parsed.success) return reply.badRequest(JSON.stringify(parsed.error.flatten()));
+  if (!parsed.success)
+    return reply.badRequest(JSON.stringify(parsed.error.flatten()));
   try {
     return await prisma.lead.update({
       where: { id: (request.params as { id: string }).id },
@@ -63,17 +65,16 @@ app.patch('/api/leads/:id/status', async (request, reply) => {
 });
 app.post('/api/projects', async (request, reply) => {
   const parsed = projectInputSchema.safeParse(request.body);
-    if (!parsed.success) return reply.badRequest(JSON.stringify(parsed.error.flatten()));
+  if (!parsed.success)
+    return reply.badRequest(JSON.stringify(parsed.error.flatten()));
   try {
-    return reply
-      .code(201)
-      .send(
-        await prisma.project.upsert({
-          where: { leadId: parsed.data.leadId },
-          update: parsed.data,
-          create: parsed.data,
-        }),
-      );
+    return reply.code(201).send(
+      await prisma.project.upsert({
+        where: { leadId: parsed.data.leadId },
+        update: parsed.data,
+        create: parsed.data,
+      }),
+    );
   } catch {
     return reply.notFound('Lead not found');
   }
